@@ -9,6 +9,7 @@ Repositorio de laboratorios prácticos del curso **CSP (Cloud Service Provider)*
 | # | Laboratorio | Descripción breve |
 |---|-------------|-------------------|
 | 01 | Despliegue de VMs y SQL Server | Creación de VNET, subnets, VM Windows y VM Ubuntu con SQL Server, conexión RDP + SSH y consultas desde SSMS |
+| 02 | VNet Peering, CRUD en SQL Server y Azure SQL (PaaS) | Emparejamiento de VNets, operaciones CRUD en AdventureWorks desde SSMS y conexión a Azure SQL mediante Private Endpoint |
 
 ---
 
@@ -18,10 +19,14 @@ Cada laboratorio sigue una arquitectura base en Azure:
 
 - **Virtual Network (VNET)** con subnets segmentadas por rol
 - **Network Security Groups (NSG)** para control de acceso por puerto
-- **VM pública** (cliente) accesible por RDP o SSH desde el exterior
-- **VM privada** (servidor) sin IP pública, accesible solo desde dentro de la VNET
+- **VM pública** (jump server) accesible por RDP desde el exterior
+- **VMs privadas** sin IP pública, accesibles solo desde dentro de la VNET
+- **VNet Peering** para comunicación entre redes virtuales distintas
+- **Private Endpoint** para acceso seguro a servicios PaaS como Azure SQL
 ```
-LAPTOP ──RDP/SSH──► VM pública (subnet1) ──SSH/Query──► VM privada (subnet2)
+LAPTOP ──RDP──► PC1 jump (snet-jump)
+                    ├──RDP──► PC2 cliente SSMS (snet-clients) ──Query──► PC3 SQL Server (snet-data)
+                    └──RDP──► PC2 cliente SSMS (snet-clients) ──Query──► Azure SQL PaaS (Private Endpoint)
 ```
 
 ---
@@ -33,6 +38,9 @@ LAPTOP ──RDP/SSH──► VM pública (subnet1) ──SSH/Query──► VM 
 - **SSH** — acceso a VMs Linux
 - **SQL Server 2022** — motor de base de datos en Ubuntu
 - **SQL Server Management Studio (SSMS)** — cliente de consultas
+- **Azure SQL** — servicio de base de datos administrado (PaaS)
+- **VNet Peering** — interconexión de redes virtuales
+- **Private Endpoint + DNS privado** — acceso seguro a servicios PaaS
 
 ---
 
@@ -49,5 +57,5 @@ Cada laboratorio contiene un PDF con el diagrama de red, las credenciales de pru
 
 ---
 
-**Autor:** Emerson Espinoza
+**Autor:** Emerson Espinoza  
 **Curso:** CSP — Microsoft Azure

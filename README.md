@@ -11,6 +11,7 @@ Repositorio de laboratorios prácticos del curso **CSP (Cloud Service Provider)*
 | 01 | Despliegue de VMs y SQL Server | Creación de VNET, subnets, VM Windows y VM Ubuntu con SQL Server, conexión RDP + SSH y consultas desde SSMS |
 | 02 | VNet Peering, CRUD en SQL Server y Azure SQL (PaaS) | Emparejamiento de VNets, operaciones CRUD en AdventureWorks desde SSMS y conexión a Azure SQL mediante Private Endpoint |
 | 03 | WAF, Microsoft Entra ID y App Services | Protección de una aplicación web con Application Gateway (WAF), autenticación de usuarios con Entra ID y despliegue en Azure App Services |
+| 04 | Log Analytics, Key Vault y Always Encrypted | Monitoreo del WAF con Log Analytics, gestión de claves con Key Vault y cifrado de columnas sensibles (DNI y Teléfono) con Always Encrypted en Azure SQL |
 
 ---
 
@@ -26,12 +27,16 @@ Cada laboratorio sigue una arquitectura base en Azure:
 - **Private Endpoint** para acceso seguro a servicios PaaS como Azure SQL
 - **Application Gateway (WAF)** para protección de aplicaciones web
 - **Microsoft Entra ID** para autenticación de identidades (SaaS)
+- **Azure Key Vault** para gestión centralizada de claves y secretos
+- **Always Encrypted** para cifrado de columnas sensibles en Azure SQL
 ```
 LAPTOP ──RDP──► PC1 jump (snet-jump)
                     ├──RDP──► PC2 cliente SSMS (snet-clients) ──Query──► PC3 SQL Server (snet-data)
                     └──RDP──► PC2 cliente SSMS (snet-clients) ──Query──► Azure SQL PaaS (Private Endpoint)
 
-Browser (Cucho) ──HTTPS/TLS──► Application Gateway (WAF) ──HTTPS──► App Service ──OAuth 2.0──► Entra ID
+Browser ──HTTPS/TLS──► Application Gateway (WAF) ──HTTPS──► App Service ──OAuth 2.0──► Entra ID
+
+VM (admin-snet) ──SSMS──► Azure SQL (Private Endpoint) ──Always Encrypted──► Key Vault
 ```
 
 ---
@@ -49,6 +54,9 @@ Browser (Cucho) ──HTTPS/TLS──► Application Gateway (WAF) ──HTTPS�
 - **Azure App Services** — hospedaje de aplicaciones web (PaaS)
 - **Azure Application Gateway** — balanceador con WAF integrado
 - **Microsoft Entra ID** — directorio de identidades y autenticación SaaS
+- **Azure Log Analytics** — monitoreo y análisis de logs del WAF y autenticación
+- **Azure Key Vault** — almacenamiento seguro de claves y secretos
+- **Always Encrypted** — cifrado de columnas sensibles en SQL sin exponer datos al motor
 
 ---
 
